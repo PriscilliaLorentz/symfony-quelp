@@ -1,0 +1,45 @@
+{% for key, row in user_lesson %}
+    <div class="panel panel-info" style="margin-left:6%;margin-right:6%">
+    <br>
+        {% if row.user.name == "" and row.user.surname == "" %}
+                <p  style="margin-left:6%;margin-right:6%">
+                    <b><span style="font-size:16px">{{row.user.username}}</span></b>
+                     <span><i> posted on {{row.editDate|date('d-M-Y \\a\\t H:i:s')}}</i></span></p>
+        {% else %}
+                <p style="margin-left:6%;margin-right:6%">
+                    <b><span style="font-size:16px">{{row.user.name}} {{row.user.surname}} </span></b>
+                    <span><i> posted on {{row.editDate|date('d-M-Y \\a\\t H:i:s')}}</i></span></p>
+        {% endif %}
+        <p style="margin-left:3%;margin-right:3%"><u>Question</u> : {{ row.subject }}</p>
+
+        <div class="panel panel-heading"  style="margin-left:6%;margin-right:6%">
+                
+                {% for key_comment, row_comment in post_comment[key] %}
+                    {% if row_comment.user.name == "" and row_comment.user.surname == "" %}
+                            <p  style="margin-left:6%;margin-right:6%">
+                                <b><span style="font-size:15px">{{row_comment.user.username}} </span></b>
+                                <span> <i>posted on {{row_comment.editDate|date('d-M-Y \\a\\t H:i:s')}}</i></span></p>
+                    {% else %}
+                            <p style="margin-left:6%;margin-right:6%">
+                                <b><span style="font-size:15px">{{row_comment.user.name}} {{row_comment.user.surname}} </span></b>
+                                <span><i> posted on {{row_comment.editDate|date('d-M-Y \\a\\t H:i:s')}}</i></span></p>
+                    {% endif %}
+                    <p style="margin-left:3%;margin-right:3%"><u>Response</u> : {{ row_comment.subject }}</p>
+                {% endfor %}
+                                    <hr/>
+                <form id="formPostcomment{{key}}" action="{{ path('quelp_status_commentAdd') }}" method="post">
+                <div class="input-group">
+                    <input type="text" hidden="hidden" value="{{row.id}}" id="postid{{key}}"/>
+                    <textarea id="commentPost{{key}}" onkeyup="checkValue('{{ key }}')" onMouseover="checkValueMOn()" class="form-control" onMouseout="checkValueMOut()" placeholder="Ecrire quelque chose"></textarea>
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" onClick="javascript:  addComment('{{ key }}' )">Réagir</button>
+                    </span>
+                </div>
+                </form>
+        </div>
+        <ul>
+                 <li>
+               </li>
+            </ul>
+    </div>
+{% endfor %}

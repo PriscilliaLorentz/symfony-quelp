@@ -1,0 +1,148 @@
+{# Cette page est la page home des pages connections d'inscription #}
+
+{% extends "QuelpConnectBundle::layoutprofil.html.twig" %}
+
+{% block title %} Accueil {% endblock %}
+
+{% block content %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+
+
+    {% block fos_user_content %}
+        <!-- Page Content -->
+        <div class="container-fluid fos_user_user_show" style="margin-top: 20px;">
+
+        <div class="col-xs-12 row-fluid" style="margin-bottom: 20px">
+            <div class="col-md-2">
+                <div class="panel panel-info"  align="center"  >
+                    <div class="panel-heading">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><h4 class="text-center">Menu</h4> </a>
+                    </div>
+                <div class="boder">
+                    <p><a href="{{ path('quelp_image_albumspage') }}" class="lien" style="font-size: 17px; font-weight: 300">Galleries</a></p>
+                    <p><a href="{{ path('quelp_image_albumspage') }}" ><img src="{{ asset('bundles/front/img/bg_Foto.jpg') }}" width="115" alt="" class="img-border img-rounded" style="border: 3px solid rgba(255, 255, 255, 0.3);margin-top: 10px"></a></p>
+                    <p ><a href="#" class="lien" style="font-size: 16px; font-weight: 300">Événements</a></p>
+                    <a href="#" ><img src="{{ asset('bundles/front/img/symfony.png') }}" width="115" alt="" class="img-border img-rounded" style="margin-top: 10px;border: 3px solid rgba(255, 255, 255, 0.3)"></a>
+                </div>
+            </div>
+            </div>
+            <div class="col-xs-12 col-md-8">
+                <div class="panel panel-info"  align="center"  >
+                    <div class="panel-heading">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><h4 class="text-center">My Profil</h4> </a>
+                    </div>
+
+
+
+                    <div class="media">
+
+                        <a class="pull-left" href="#">
+                            <img src="{{asset('bundles/front/img/default-avatar.png')}}"  height="160" width="160" alt="" class="img-thumbnail" >
+                        </a>
+
+                        <div class="media-body">
+
+                            <div class="row">
+                                <div class="col-md-1 col-md-offset-1"><h3><p class="firstname-profil" style="color: rgba(0, 0, 0, 0.5);">{{ user.name }}&nbsp;{{ user.surname }}</p></h3></div>
+                                <div class="col-md-5 col-md-offset-5"></div>
+                            </div>
+                            <div class="row">
+                                {% if(user.username==app.user.username) %}
+                                <div class="col-md-4"><a href="{{ path('quelp_connect_editprofile') }}" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-cog" style="color: white;padding-top: 3px"></span><span style="color: white">&nbsp;Modifier Profil</span></a></div>
+                                {% endif %}
+                                <div class="col-md-4"><a href="{{ path('quelp_relation_showall') }}" class="btn btn-info btn-lg"><span class="glyphicon glyphicon-user" style="color: white;padding-top: 3px"></span><span style="color: white">&nbsp;Patterns</span></a></div>
+                                <div class="col-md-4"><a href="{{ path('quelp_connect_editprofile') }}" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-star" style="color: white;padding-top: 3px"></span><span style="color: white">&nbsp;Infos</span></a></div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><h4 class="text-center">My news</h4> </a>
+                        </div>
+
+                    <div style="float: left">
+
+                    </div>
+                        <div id="statusResult">    <br>
+                            {# include 'StatusBundle:Default:index.html.twig' with {'user_lesson' : "", 'post_comment' : ""}  #}
+                        </div>      <br>
+
+                        <script type="text/javascript">
+
+                            var val = "";
+
+                            window.setInterval(function(){
+                                if (val == "") {
+                                    loadAjax();
+                                }
+                            }, 4000);
+
+                            function addComment(key)
+                            {
+                                var comment = document.getElementById("commentPost"+key).value;
+                                var postId = document.getElementById("postid"+key).value;
+                                var DATA = 'commentText=' + comment + '&post=' + postId;
+                                $.ajax({
+                                    type: "POST",
+                                    url: "{{ path('quelp_status_commentAdd') }}",
+                                    data: DATA,
+                                    cache: false,
+                                    success: function(data){
+                                        loadAjax();
+                                    },
+                                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                                        alert(errorThrown);
+                                    }
+                                });
+                            }
+
+                            function checkValue(key)
+                            {
+                                val = document.getElementById("commentPost"+key).value;
+                            }
+
+                            function checkValueMOn()
+                            {
+                                val = "je suis la";
+                            }
+
+                            function checkValueMOut()
+                            {
+                                val = "";
+                            }
+
+                            function loadAjax()
+                            {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "{{ path('quelp_status_show') }}",
+                                    cache: false,
+                                    success: function(data){
+                                        $("#statusResult").html(data);
+                                    }
+                                });
+                            }
+                        </script>
+
+                    <div class="panel-group" id="accordion">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse">
+                                <p class="text-center">Suite</p>
+                            </a>
+                        </h4>
+
+                    </div>
+                </div>
+            </div>
+
+{% include "QuelpConnectBundle:Common:right_bloc.html.twig"  %}
+
+            {% endblock %}
+
+
+
+{% endblock %}

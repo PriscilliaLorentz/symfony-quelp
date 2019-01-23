@@ -1,0 +1,44 @@
+
+
+{% extends "QuelpImageBundle::layout.html.twig" %}
+
+{% block title %} Acceuil {% endblock %}
+
+{% block content %}
+
+<br><br>
+{% include "QuelpConnectBundle:Common:left_bloc.html.twig"  %}
+<div class="col-xs-12 col-md-7">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+			<a class="dropdown-toggle" data-toggle="dropdown"><h4>Partner requests received</h4> </a>
+        </div>
+
+        <div class="">    <br><br>
+
+				<!-- Resultat de la recherche -->
+
+				{% for key, row in users_found %}
+                <div class="follow-list">
+                    <div class="media">
+                        <div class="pull-left">
+                            <a href="{{ path('quelp_connect_profilepage', {'id': row.id}) }}"><img src="{{asset('bundles/front/img/default-avatar.png')}}" height="100px" alt="..."></a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">{{ row.username }}</h4><br>
+                            <a class="btn btn-success" href="{{ path('quelp_connect_profilepage', {'id': row.id}) }}">View Profil</a>&nbsp;&nbsp;<a class="btn btn-warning" href="{{ path('quelp_relation_accept', {'id': row.id}) }}">Confirm</a>
+                        </div>
+                    </div>
+                </div>
+				{% endfor %}
+
+		</div>      <br>
+
+		<div class="row">
+
+		</div>
+	</div>
+</div>
+
+{% include "QuelpConnectBundle:Common:right_bloc.html.twig"  %}
+{% endblock %}
